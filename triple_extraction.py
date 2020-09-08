@@ -6,13 +6,13 @@
 from sentence_parser import *
 import re
 
-class TripleExtractor:
+class TripleExtractor:  
     def __init__(self):
         self.parser = LtpParser()
 
     '''文章分句处理, 切分长句，冒号，分号，感叹号等做切分标识'''
     def split_sents(self, content):
-        return [sentence for sentence in re.split(r'[？?！!。；;：:\n\r]', content) if sentence]
+        return [sentence for sentence in re.split(r'[,，？?！!。；;：:\n\r]', content) if sentence]
 
     '''利用语义角色标注,直接获取主谓宾三元组,基于A0,A1,A2'''
     def ruler1(self, words, postags, roles_dict, role_index):
@@ -133,5 +133,3 @@ def test():
     extractor = TripleExtractor()
     svos = extractor.triples_main(content2)
     print('svos', svos)
-
-test()
