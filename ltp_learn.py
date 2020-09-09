@@ -6,9 +6,19 @@ from pyltp import Parser
 from pyltp import SementicRoleLabeller
 
 
-text = "经审理查明，原告单身生活多年膝下无子。1995年6月5日经人介绍原告收养被告为养子，将被告户口上在原告名义，但未办理过养手续，在日后的实际生活中也未在一起生活。"
+#text = "刘某2于1974年6月25日出生，刘某2亲生父亲刘志河系原告刘某1之弟。刘某2亲生母亲王大珍于1974年11月份去世。刘某2出生后三个月，刘志河将刘某2交由原告刘某1夫妇收养 。刘某1之妻李秀婷于2013年7月27日去世。2008年起，刘某2在与刘某1夫妇共同生活期间，常发生口角、争执，双方关系恶化。"
 
-dicdir='word'                           #外部字典
+text = ""
+text_path = "收养关系纠纷总和.txt"
+with open(text_path, 'rt',encoding='utf-8') as f:
+    for line in f:
+        line = line.strip()
+        text = text + line
+         
+f.close()
+
+print(text)
+#"ltp_data\\word.txt"                           #外部字典
 
 #分句
 sents = SentenceSplitter.split(text)
@@ -17,7 +27,8 @@ print('\n'.join(sents))
 
 #中文分词
 segmentor = Segmentor()  #初始化实例
-segmentor.load("ltp_data\\cws.model")  #加载模型
+#segmentor.load("ltp_data\\cws.model")  #加载模型
+segmentor.load_with_lexicon("ltp_data\\cws.model","ltp_data\\word.txt")
 words = segmentor.segment(text)  #分词
 #print(type(words))
 print("----------------分词----------------")
@@ -29,6 +40,7 @@ segmentor.release()  #释放模型
 pdir='ltp_data\\pos.model'
 pos = Postagger()                                        #初始化实例
 pos.load(pdir)                                              #加载模型
+#pos.load_with_lexicon()
 
 postags = pos.postag(words)                        #词性标注
 postags = list(postags)
@@ -74,7 +86,6 @@ for i in range(len(words)):
 parser.release()                                           #释放模型
 
 #语义角色标注
-
 srlmodel = 'ltp_data\\pisrl_win.model'
 labeller = SementicRoleLabeller()                #初始化实例
 labeller.load(srlmodel)                                 #加载模型
