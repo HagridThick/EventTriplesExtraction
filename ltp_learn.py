@@ -39,8 +39,7 @@ segmentor.release()  #释放模型
 #词性标注
 pdir='ltp_data\\pos.model'
 pos = Postagger()                                        #初始化实例
-#pos.load(pdir)                                              #加载模型
-pos.load_with_lexicon(pdir,"ltp_data\\law_words.txt")
+pos.load(pdir)                                              #加载模型
 
 postags = pos.postag(words)                        #词性标注
 postags = list(postags)
@@ -86,7 +85,7 @@ for i in range(len(words)):
     print(relation[i] + '(' + words[i] + ', ' + heads[i] + ')')
 
 parser.release()                                           #释放模型
-
+"""
 #语义角色标注
 srlmodel = 'ltp_data\\pisrl_win.model'
 labeller = SementicRoleLabeller()                #初始化实例
@@ -106,3 +105,4 @@ for role in roles:
         ["%s:(%d,%d)" % (arg.name, arg.range.start, arg.range.end) for arg in role.arguments]))
 
 labeller.release()                                           #释放模型
+"""
