@@ -17,7 +17,7 @@ with open(text_path, 'rt',encoding='utf-8') as f:
          
 f.close()
 
-print(text)
+#print(text)
 #"ltp_data\\word.txt"                           #外部字典
 
 #分句
@@ -28,7 +28,7 @@ print('\n'.join(sents))
 #中文分词
 segmentor = Segmentor()  #初始化实例
 #segmentor.load("ltp_data\\cws.model")  #加载模型
-segmentor.load_with_lexicon("ltp_data\\cws.model","ltp_data\\word.txt")
+segmentor.load_with_lexicon("ltp_data\\cws.model","ltp_data\\law_words.txt")
 words = segmentor.segment(text)  #分词
 #print(type(words))
 print("----------------分词----------------")
@@ -39,8 +39,8 @@ segmentor.release()  #释放模型
 #词性标注
 pdir='ltp_data\\pos.model'
 pos = Postagger()                                        #初始化实例
-pos.load(pdir)                                              #加载模型
-#pos.load_with_lexicon()
+#pos.load(pdir)                                              #加载模型
+pos.load_with_lexicon(pdir,"ltp_data\\law_words.txt")
 
 postags = pos.postag(words)                        #词性标注
 postags = list(postags)
@@ -54,7 +54,8 @@ pos.release()                                               #释放模型
 #命名实体识别
 nermodel='ltp_data\\ner.model'
 reg = NamedEntityRecognizer()                    #初始化命名实体实例
-reg.load(nermodel)                                       #加载模型
+#reg.load(nermodel)                                       #加载模型
+reg.load_with_lexicon(nermodel,"ltp_data\\law_words.txt")
 netags = reg.recognize(words, postags)         #对分词、词性标注得到的数据进行实体标识
 netags = list(netags)
 #print("----------------命名实体识别1----------------")
@@ -69,7 +70,8 @@ reg.release()                                                 #释放模型
 #依存句法分析
 parmodel = 'ltp_data\\parser.model'
 parser = Parser()                                          #初始化命名实体实例
-parser.load(parmodel)                                  #加载模型
+#parser.load(parmodel)                                  #加载模型
+parser.load_with_lexicon(parmodel,"ltp_data\\law_words.txt")
 arcs = parser.parse(words, postags)              #句法分析
 
 #输出结果
@@ -88,8 +90,8 @@ parser.release()                                           #释放模型
 #语义角色标注
 srlmodel = 'ltp_data\\pisrl_win.model'
 labeller = SementicRoleLabeller()                #初始化实例
-labeller.load(srlmodel)                                 #加载模型
-
+#labeller.load(srlmodel)                                 #加载模型
+labeller.load_with_lexicon(srlmodel,"ltp_data\\law_words.txt")
 words = ['元芳', '你', '怎么', '看']
 postags = ['nh', 'r', 'r', 'v']
 arcs = parser.parse(words, postags)             #依存句法分析
