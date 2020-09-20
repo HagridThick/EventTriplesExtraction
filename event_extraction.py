@@ -4,7 +4,7 @@ from pyltp import Postagger
 from pyltp import NamedEntityRecognizer
 from pyltp import Parser
 from pyltp import SementicRoleLabeller
-
+import re
 
 segmentor = Segmentor()  #初始化实例分词
 segmentor.load_with_lexicon("ltp_data\\cws.model","ltp_data\\law_words.txt") #加载模型带词库
@@ -24,6 +24,9 @@ parmodel = 'ltp_data\\parser.model'
 parser = Parser()                                          #初始化命名实体实例
 parser.load(parmodel)                                  #加载模型
 """
+#def split_sentence(str s):
+
+
 
 #text_path = "事件抽取例子.txt"
 text_path = "法院描述抽取例子.txt"
